@@ -778,9 +778,21 @@
       if (!file) return;
       try {
         var downloads = (window.claude && typeof window.claude.use === 'function') ? await window.claude.use('downloads') : null;
-        if (!downloads) throw new Error('unavailable');
-        await downloads.save({ filename: file.filename, data: b64ToArrayBuffer(file.data) });
+        if (downloads) {
+          await downloads.save({ filename: file.filename, data: b64ToArrayBuffer(file.data) });
+          return;
+        }
       } catch (err) {
+        // fall through to native download
+      }
+      try {
+        var a = document.createElement('a');
+        a.href = 'data:application/pdf;base64,' + file.data;
+        a.download = file.filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch (err2) {
         if (fallback) fallback.hidden = false;
       }
     }
