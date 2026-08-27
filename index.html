@@ -8,12 +8,12 @@
 <style>
   :root {
     --bg: #FAF9F5;
-    --paper: #F1EDE3;
-    --paper-alt: #E8E2D2;
+    --paper: #F1F0EC;
+    --paper-alt: #E7E6E1;
     --ink: #0A0A0A;
     --ink-soft: #545454;
-    --line: #DDD6C4;
-    --line-soft: #EAE5D8;
+    --line: #DEDDD7;
+    --line-soft: #EAE9E5;
     --accent: #0A0A0A;
     --accent-deep: #000000;
     --on-accent: #FAFAF8;
@@ -274,6 +274,7 @@
     margin: 0;
     font-family: 'Fraunces', serif;
     font-style: italic;
+    font-weight: 400;
     font-size: clamp(21px, 2.6vw, 30px);
     line-height: 1.48;
     color: var(--ink);
@@ -456,10 +457,10 @@
           <p class="exp-role">Operations, Content &amp; Client Support · Pilates &amp; movement studio, Western Australia</p>
           <p class="body">When I started with Lillie, her back end hadn't been touched in years — an old email domain was still live, files were scattered, and there was no real system behind her classes, bookings, or content. I closed the domain, rebuilt her filing from scratch, and took over her CRM (GoHighLevel), scheduling (Acuity), content operations, and email marketing end to end. Email started on MailerLite; I later migrated it into GoHighLevel so the CRM, enquiry funnel, scheduling, and email now all run from one central system. I also built a weekly content planning tracker — every post and newsletter for the coming week gets planned, drafted, and approved ahead of time, then scheduled through GoHighLevel.</p>
           <div class="exp-stats">
-            <div><div class="exp-stat-num tnum">+271.8%</div><div class="exp-stat-label">Instagram reach</div></div>
-            <div><div class="exp-stat-num tnum">+3,200%</div><div class="exp-stat-label">Facebook link clicks</div></div>
-            <div><div class="exp-stat-num tnum">+50%</div><div class="exp-stat-label">Website visits, YoY</div></div>
-            <div><div class="exp-stat-num tnum">5,098+</div><div class="exp-stat-label">Emails managed</div></div>
+            <div><div class="exp-stat-num tnum" data-end="271.8" data-decimals="1" data-prefix="+" data-suffix="%">0%</div><div class="exp-stat-label">Instagram reach</div></div>
+            <div><div class="exp-stat-num tnum" data-end="3200" data-decimals="0" data-prefix="+" data-suffix="%">0%</div><div class="exp-stat-label">Facebook link clicks</div></div>
+            <div><div class="exp-stat-num tnum" data-end="50" data-decimals="0" data-prefix="+" data-suffix="%">0%</div><div class="exp-stat-label">Website visits, YoY</div></div>
+            <div><div class="exp-stat-num tnum" data-end="5098" data-decimals="0" data-suffix="+">0</div><div class="exp-stat-label">Emails managed</div></div>
           </div>
           <div class="proof-viz">
             <div class="proof-viz-label">Email click-through rate, before → after</div>
@@ -519,10 +520,10 @@
           <p class="exp-role">Lead Generation &amp; Business Development · Peptide vendor directory, United States</p>
           <p class="body">Alec needed his vendor directory populated with real, vetted suppliers, fast. I built and ran the outreach process myself — researching vendors, reaching out, tracking every response in Google Sheets, and handling product research, classification, and image QA for the platform.</p>
           <div class="exp-stats">
-            <div><div class="exp-stat-num tnum">400</div><div class="exp-stat-label">Vendors contacted</div></div>
-            <div><div class="exp-stat-num tnum">101</div><div class="exp-stat-label">Responses generated</div></div>
-            <div><div class="exp-stat-num tnum">33</div><div class="exp-stat-label">Vendors onboarded</div></div>
-            <div><div class="exp-stat-num tnum">100%</div><div class="exp-stat-label">Product QA coverage</div></div>
+            <div><div class="exp-stat-num tnum" data-end="400" data-decimals="0">0</div><div class="exp-stat-label">Vendors contacted</div></div>
+            <div><div class="exp-stat-num tnum" data-end="101" data-decimals="0">0</div><div class="exp-stat-label">Responses generated</div></div>
+            <div><div class="exp-stat-num tnum" data-end="33" data-decimals="0">0</div><div class="exp-stat-label">Vendors onboarded</div></div>
+            <div><div class="exp-stat-num tnum" data-end="100" data-decimals="0" data-suffix="%">0%</div><div class="exp-stat-label">Product QA coverage</div></div>
           </div>
           <div class="proof-viz">
             <div class="proof-viz-label">Outreach funnel</div>
@@ -710,7 +711,7 @@
   (function () {
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var reveals = document.querySelectorAll('.reveal');
-    var counters = document.querySelectorAll('.proof-num[data-end]');
+    var counters = document.querySelectorAll('.proof-num[data-end], .exp-stat-num[data-end]');
 
     function formatNum(val, decimals) {
       return val.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
@@ -719,15 +720,16 @@
     function animateCount(el) {
       var end = parseFloat(el.dataset.end);
       var decimals = parseInt(el.dataset.decimals || '0', 10);
+      var prefix = el.dataset.prefix || '';
       var suffix = el.dataset.suffix || '';
       var duration = 1500;
       var start = performance.now();
       function tick(now) {
         var p = Math.min((now - start) / duration, 1);
         var eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = formatNum(end * eased, decimals) + suffix;
+        el.textContent = prefix + formatNum(end * eased, decimals) + suffix;
         if (p < 1) requestAnimationFrame(tick);
-        else el.textContent = formatNum(end, decimals) + suffix;
+        else el.textContent = prefix + formatNum(end, decimals) + suffix;
       }
       requestAnimationFrame(tick);
     }
@@ -735,7 +737,7 @@
     if (reduced || !('IntersectionObserver' in window)) {
       reveals.forEach(function (el) { el.classList.add('in'); });
       counters.forEach(function (el) {
-        el.textContent = formatNum(parseFloat(el.dataset.end), parseInt(el.dataset.decimals || '0', 10)) + (el.dataset.suffix || '');
+        el.textContent = (el.dataset.prefix || '') + formatNum(parseFloat(el.dataset.end), parseInt(el.dataset.decimals || '0', 10)) + (el.dataset.suffix || '');
       });
       return;
     }
