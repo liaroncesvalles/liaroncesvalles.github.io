@@ -7,6 +7,7 @@
 
 <style>
   :root {
+    color-scheme: light;
     --bg: #FAF9F5;
     --paper: #F1F0EC;
     --paper-alt: #E7E6E1;
@@ -27,7 +28,7 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; background: var(--bg); }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
